@@ -1,0 +1,39 @@
+---
+- name: Установка Minikube и запуск контейнера
+  hosts: srv-mink
+  become: yes 
+    # become_method: sudo
+    # become_user: root
+
+  tasks:
+    - name: Обновление системы
+      apt:
+        update_cache: yes
+
+    - name: Загрузк Minikube
+      get_url:
+        url: https://storage.googleapis.com/minikube/releases/latest/minikube-linux-amd64
+        dest: /usr/local/bin/minikube
+        mode: '0755'
+
+    - name: Установка kubectl
+      get_url:
+        url: https://dl.k8s.io/release/v1.30.0/bin/linux/amd64/kubectl
+        dest: /usr/local/bin/kubectl
+        mode: '0755'
+
+          #  pre_tasks:
+ 
+          #    - name: check the status of minikube.
+          #      command: minikube status 
+          #      register: minikube_status
+          #      changed_when: false
+          #      ignore_errors: true
+
+          #    - name: DELETE
+          #      command: minikube delete -p multinode
+
+          #    - name: Запуск minikube.
+          #      command: minikube start --nodes 5 -p multinode
+          #      when: "not minikube_status.stdout or 'Running' not in minikube_status.stdout"
+
